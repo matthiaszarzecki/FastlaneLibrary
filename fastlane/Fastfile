@@ -1,0 +1,4 @@
+desc "Test Function"
+lane :testFunction
+	puts "It Works! :D"
+end
