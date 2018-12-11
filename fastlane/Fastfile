@@ -1,4 +1,4 @@
 desc "Test Function"
-lane :testFunction
+lane :testFunction do |options|
 	puts "It Works! :D"
 end
