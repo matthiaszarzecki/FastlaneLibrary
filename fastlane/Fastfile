@@ -2,3 +2,15 @@ desc "Test Function"
 lane :testFunction do |options|
 	puts "It Works! :D"
 end
+
+lane :generateLintHTMLReport do |options|
+	# Create HTML-Report for linking in Jenkins-Dashboard
+	swiftlint(
+		mode:               :lint,
+		reporter:           "html",
+		output_file:        "#{options[:testOutputPath]}/swiftlint.result.html",
+		config_file:        options[:swiftLintConfig],
+		ignore_exit_status: true,
+		strict:             true,
+	)
+end
