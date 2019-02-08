@@ -1,10 +1,5 @@
-desc "Test Function"
-lane :testFunction do |options|
-	puts "It Works! :D"
-end
-
+desc "Creates HTML-Report for linking in Jenkins-Dashboard"
 lane :generateLintHTMLReport do |options|
-	# Create HTML-Report for linking in Jenkins-Dashboard
 	swiftlint(
 		mode:               :lint,
 		reporter:           "html",
@@ -15,8 +10,8 @@ lane :generateLintHTMLReport do |options|
 	)
 end
 
+desc "Creates XML-Report for use in linting table report"
 lane :generateLintXMLReport do |options|
-	# Create XML-Report for use in linting table report
 	swiftlint(
 		mode:               :lint,
 		reporter:           "checkstyle",
@@ -86,4 +81,8 @@ lane :generateXCOVReport do |options|
 		output_directory:  "#{options[:testOutputPath]}/xcov_report/",
 		derived_data_path: options[:derivedDataPath]
 	)
+end
+
+lane :generateScreenshots do
+	capture_screenshots
 end
