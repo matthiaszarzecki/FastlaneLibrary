@@ -14,3 +14,76 @@ lane :generateLintHTMLReport do |options|
 		strict:             true,
 	)
 end
+
+lane :generateLintXMLReport do |options|
+	# Create XML-Report for use in linting table report
+	swiftlint(
+		mode:               :lint,
+		reporter:           "checkstyle",
+		output_file:        "#{options[:testOutputPath]}/swiftlint.result.xml",
+		config_file:        options[:swiftLintConfig],
+		ignore_exit_status: true,
+		strict:             true,
+	)
+end
+
+lane :generateDocumentation do |options|
+	jazzy(
+    config: options[:jazzyConfig]
+  )
+end
+
+lane :runMonkeyTests do |options|
+	scan(
+		scheme:            options[:schemeNameMonkeyTests],
+		fail_build:        false,
+		derived_data_path: options[:derivedDataPath],
+		buildlog_path:     "#{options[:testOutputPath]}/buildlog",
+		code_coverage:     true,
+		output_directory:  "#{options[:testOutputPath]}/scan_report/"
+	)
+end
+
+lane :generateIcons do |options|
+	appicon(
+		appicon_image_file: options[:appIconPath],
+		appicon_devices:    options[:iconTypes],
+		appicon_path:       options[:xcAssets]
+	)
+end
+
+lane :generateTheApp do |options|
+	gym(
+		scheme:           options[:schemeName],
+		clean:            true,
+		output_directory: "#{options[:buildPath]}/",
+		build_path:       "#{options[:buildPath]}/archive",
+		buildlog_path:    "#{options[:buildPath]}/build_log"
+	)
+end
+
+lane :testTheApp do |options|
+	scan(
+		scheme:            options[:schemeNameTests],
+		fail_build:        false,
+		derived_data_path: options[:derivedDataPath],
+		buildlog_path:     "#{options[:testOutputPath]}/buildlog",
+		code_coverage:     true,
+		output_directory:  "#{options[:testOutputPath]}/scan_report/"
+	)
+end
+
+lane :generateTrainerReport do |options|
+	trainer(
+		output_directory: "#{options[:testOutputPath]}/trainer_report/"
+	)
+end
+
+lane :generateXCOVReport do |options|
+	xcov(
+		workspace:         options[:workspace],
+		scheme:            options[:schemeNameTests],
+		output_directory:  "#{options[:testOutputPath]}/xcov_report/",
+		derived_data_path: options[:derivedDataPath]
+	)
+end
